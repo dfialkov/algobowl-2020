@@ -1,26 +1,5 @@
-IDIR=../include
-CC=gcc
-CFLAGS=-I$(IDIR)
+CC=g++
+CFLAGS=-I../include
 
-ODIR=../obj
-LDIR=../lib
-
-LIBS=-lm
-
-_DEPS = point.h
-DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
-
-_OBJ = main.o point.o 
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
-
-
-$(ODIR)/%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-hellomake: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
-
-.PHONY: clean
-
-clean:
-	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~
+algo: main.cpp point.cpp
+	$(CC) $(CFLAGS) -o ../bin/algo main.cpp point.cpp
