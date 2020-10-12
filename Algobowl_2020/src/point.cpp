@@ -3,6 +3,7 @@
 
 //constructor implementation
 Point::Point(int x, int y, int z): x(x), y(y), z(z) {};
+Point::Point(const Point& p): x(p.x), y(p.y), z(p.z) {};
 
 //defines behavior for the weak ordering of the priority_queue
 bool Point::compare(Point p1, Point p2) {

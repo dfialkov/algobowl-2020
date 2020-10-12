@@ -5,11 +5,14 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include <string>
+
 struct Point {
     int x, y, z;
 
     //constructor
     Point(int x, int y, int z);
+    Point(const Point& p);
 
     //compare 2 points (for the sake of priority_queue)
     static bool compare(Point p1, Point p2);
