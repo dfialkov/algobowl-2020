@@ -1,6 +1,8 @@
 #include <Algobowl_2020/state.h>
 #include <iostream>
 
+using namespace std;
+
 State::State(int k, std::vector<Point> points) {
     // instantiate k empty sets
     for(int i = 0; i < k; i++)  {
@@ -34,9 +36,11 @@ void State::debug() {
         for(int j = 0; j < sets[i].size(); j++) {
             std::cout << "(" << sets[i][j].x << ", " << sets[i][j].y << ", " << sets[i][j].z << "), ";
         }
+        std::cout << endl;
     }
-    std::cout << "orphans: ";
+    std::cout << endl << "orphans: ";
     for(int l = 0; l < orphans.size(); l++) {
         std::cout << "(" << orphans[l].x << ", " << orphans[l].y << ", " << orphans[l].z << "), ";
     }
+    std::cout << endl << endl;
 }
