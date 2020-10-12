@@ -1,1 +1,8 @@
+
+#ignore build and lib dirs
+Algobowl_2020/build
+Algobowl_2020/lib/*
 input.txt
+#ignore executables
+Algobowl_2020/bin/*
+
