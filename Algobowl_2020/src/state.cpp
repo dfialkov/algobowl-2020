@@ -12,6 +12,30 @@ State::State(int k, std::vector<Point> points) {
     orphans = std::vector<Point>(points);
 }
 
+State::State(const State& toCopy){
+  //copy orphans
+  for(int i = 0;i<toCopy.getOrphansSize();i++){
+    orphans.emplace_back(Point(toCopy.getOrphanIdx(i)));
+  }
+  //copy maxDist
+  max_dist = toCopy.get_max_dist();
+
+  //for every subset in the copied state's sets...
+  for(vector<Point> srcSet : toCopy.getSets()){
+    //create a subset in the new state
+    std::vector<Point> subset;
+    //for every point in the subset...
+    for(Point srcPoint: srcSet){
+      //copy the point and push it into the new set's subset
+      subset.emplace_back(Point(srcPoint));
+    }
+    //place the subset into the new state's sets
+    sets.push_back(subset);
+
+
+  }
+}
+
 void State::step(int src, int dest) {
     // update max dist
     for(Point p : sets[dest]) {
@@ -26,9 +50,22 @@ void State::step(int src, int dest) {
     orphans.erase(orphans.begin() + src);
 }
 
-int State::get_max_dist() {
+int State::get_max_dist() const{
     return max_dist;
 }
+
+int State::getOrphansSize() const{
+  return orphans.size();
+}
+
+Point State::getOrphanIdx(int idx)const{
+  return orphans[idx];
+}
+
+std::vector<std::vector<Point>> State::getSets()const{
+  return sets;
+}
+
 
 void State::debug() {
     for(int i = 0; i < sets.size(); i++) {

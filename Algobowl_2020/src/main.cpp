@@ -58,14 +58,17 @@ int main() {
     ifs.close();
 
 
-    
+
 
     //debugging
     State s(num_sets, points);
     s.debug();
-    
 
+    //debug copy constructor
+    State debugCopyS = State(s);
+    debugCopyS.debug();
 
+    /*
     //Create queues
     queue<State> thisExplore;
     //Create a priority queue that has the state with the HIGHEST maxDist on top
@@ -77,14 +80,25 @@ int main() {
     cout << "Initial state: " << endl;
     s.debug();
 
+
     //Place this state into thisExplore
+    thisExplore.push(s);
 
     //while thisExplore is not empty:
+    while (!thisExplore.empty()){
 
+      State myState = thisExplore.pop();
+      for(int i = 0;i<myState.getOrphansSize();i++){
+        for(int j = 0;j<num_sets;j++){
+
+        }
+      }
+    }
     //Pop state newS off the top of thisExplore
-    
+
     //For each item in the orphan set of newS:
         //For each set of points in newS:
             //create a copy of newS
             //Move the item into the set
+*/
 }
