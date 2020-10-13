@@ -63,17 +63,28 @@ int main() {
     //debugging
     State s(num_sets, points);
     s.debug();
+    
+
+
+    //Create queues
+    queue<State> thisExplore;
+    //Create a priority queue that has the state with the HIGHEST maxDist on top
+
+    //Prepare a state that has one point in each state, selected more or less randomly.
     for(int i = 0;i<num_sets;i++){
         s.step(i, i);
     }
     cout << "Initial state: " << endl;
     s.debug();
 
+    //Place this state into thisExplore
 
-    //Create queues
-    queue<State> thisExplore;
+    //while thisExplore is not empty:
 
+    //Pop state newS off the top of thisExplore
     
-
-
+    //For each item in the orphan set of newS:
+        //For each set of points in newS:
+            //create a copy of newS
+            //Move the item into the set
 }
