@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include<queue>
 #include <Algobowl_2020/point.h>
 #include <Algobowl_2020/state.h>
 
@@ -56,9 +57,23 @@ int main() {
     }
     ifs.close();
 
+
+    
+
     //debugging
     State s(num_sets, points);
     s.debug();
-    s.step(1, 1);
+    for(int i = 0;i<num_sets;i++){
+        s.step(i, i);
+    }
+    cout << "Initial state: " << endl;
     s.debug();
+
+
+    //Create queues
+    queue<State> thisExplore;
+
+    
+
+
 }
