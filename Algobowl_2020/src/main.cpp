@@ -3,15 +3,15 @@
  */
 
 #include <iostream>
-#include <queue>
+#include <vector>
 #include <fstream>
-#include <functional>
 #include <Algobowl_2020/point.h>
+#include <Algobowl_2020/state.h>
 
 using namespace std;
 
 int main() {
-    priority_queue<Point, std::vector<Point>, std::function<bool(Point, Point)>> points(Point::compare);
+    std::vector<Point> points;
     int num_points, num_sets;
     ifstream ifs;
 
@@ -52,13 +52,13 @@ int main() {
         }
 
         //emplace combines push() and Point's constructor
-        points.emplace(x, y, z);
+        points.emplace_back(x, y, z);
     }
-
     ifs.close();
 
     //debugging
-    cout << "number of points: " << num_points << endl;
-    cout << "number of sets: " << num_sets << endl;
-    cout << "top point x: " << points.top().x << endl;
+    State s(num_sets, points);
+    s.debug();
+    s.step(1, 1);
+    s.debug();
 }
