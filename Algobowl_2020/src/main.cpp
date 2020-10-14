@@ -3,6 +3,7 @@
  */
 
 #include <iostream>
+
 #include <vector>
 #include <fstream>
 #include<queue>
@@ -11,10 +12,27 @@
 
 using namespace std;
 
+
+struct CompareMaxDist{
+  bool operator()(State const& s1, State const& s2){
+    return s1.get_max_dist() < s2.get_max_dist();
+  }
+};
+
+struct CompareReturnZero{
+  bool operator()(State const& s1, State const& s2){
+    return 0;
+  }
+};
+
+
 int main() {
     std::vector<Point> points;
     int num_points, num_sets;
     ifstream ifs;
+
+    //Beam size. You can change this for a bigger beam(more memory) or a smaller beam(less memory)
+    int beamSize = 1000;
 
     //access file
     ifs.open("input.txt", ios::in);
@@ -62,16 +80,17 @@ int main() {
 
     //debugging
     State s(num_sets, points);
-    s.debug();
 
-    //debug copy constructor
-    State debugCopyS = State(s);
-    debugCopyS.debug();
 
-    /*
+
+
+
     //Create queues
-    queue<State> thisExplore;
+    queue <State> thisExplore;
     //Create a priority queue that has the state with the HIGHEST maxDist on top
+    priority_queue<State, vector<State>, CompareMaxDist> nextExplore;
+
+
 
     //Prepare a state that has one point in each state, selected more or less randomly.
     for(int i = 0;i<num_sets;i++){
@@ -83,22 +102,40 @@ int main() {
 
     //Place this state into thisExplore
     thisExplore.push(s);
+    //Generate expansions of the state(try to place every point in the orphan set into every set of the set of sets).
+    // Place expansions into nextExplore.
+
+
 
     //while thisExplore is not empty:
     while (!thisExplore.empty()){
-
-      State myState = thisExplore.pop();
+      //Get a state off the top
+      State myState = thisExplore.front();
+      thisExplore.pop();
       for(int i = 0;i<myState.getOrphansSize();i++){
         for(int j = 0;j<num_sets;j++){
-
+          State expansionState = State(myState);
+          expansionState.step(i, j);
+          nextExplore.push(expansionState);
+          if(nextExplore.size() > beamSize){
+            nextExplore.pop();
+          }
         }
       }
-    }
-    //Pop state newS off the top of thisExplore
+      //First, check if the top item of nextExplore has an orphan set of size zero. If it is, break out of this this for loop
+      //Info on what to do after breaking out is directly after the end of this while loop
 
-    //For each item in the orphan set of newS:
-        //For each set of points in newS:
-            //create a copy of newS
-            //Move the item into the set
-*/
+      //Otherwise, transfer the contents of nextExplore into thisExplore.
+      //However you do that, make sure that nextExplore is empty before the while loop continues.
+      //Then, let the while loop continue
+
+    }
+    //Once you've broken out, place the contents of nextExplore into a vector of states.
+    //The output is the state in this array that has the lowest MaxDist.
+    //Write the output to a file? I don't know what form the output is supposed to be in.
+    //Shouldn't be hard to find out though.
+
+
+    //Remember to tweak the beam size
+
 }
