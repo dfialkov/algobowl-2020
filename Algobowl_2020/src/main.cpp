@@ -19,11 +19,7 @@ struct CompareMaxDist{
   }
 };
 
-struct CompareReturnZero{
-  bool operator()(State const& s1, State const& s2){
-    return 0;
-  }
-};
+
 
 
 int main() {
@@ -86,7 +82,7 @@ int main() {
 
 
     //Create queues
-    priority_queue <State, vector<State>, CompareMaxDist> thisExplore;
+    queue <State> thisExplore;
     //Create a priority queue that has the state with the HIGHEST maxDist on top
     priority_queue<State, vector<State>, CompareMaxDist> nextExplore;
 
@@ -106,11 +102,11 @@ int main() {
     // Place expansions into nextExplore.
 
 
-
+while(true){
     //while thisExplore is not empty:
     while (!thisExplore.empty()){
       //Get a state off the top
-      State myState = thisExplore.top();
+      State myState = thisExplore.front();
       thisExplore.pop();
       for(int i = 0;i<myState.getOrphansSize();i++){
         for(int j = 0;j<num_sets;j++){
@@ -120,53 +116,28 @@ int main() {
           if(nextExplore.size() > beamSize){
             nextExplore.pop();
           }
-          //First, check if the top item of nextExplore has an orphan set of size zero. If it is, break out of this this for loop
-          if(nextExplore.top().getOrphansSize()==0){
-            break;
-          }
-          //Otherwise, transfer the contents of nextExplore into thisExplore.
-          else{
-            nextExplore.swap(thisExplore);
-            //However you do that, make sure that nextExplore is empty before the while loop continues.
-            //Then, let the while loop continue
-            while (!nextExplore.empty()){
-              nextExplore.pop();
-            }
-          }
+
         }
       }
 
       //Info on what to do after breaking out is directly after the end of this while loop
   }
-  //Once you've broken out, place the contents of nextExplore into a vector of states.
-  std::vector<State> finalAnswer;
-  int index = 0;
-  int minMaxDist=1000000;
-  int possibleMin;
-  while (!nextExplore.empty()){
-    finalAnswer.push_back(nextExplore.top());
-    nextExplore.pop();
-    index++;
+
+  //First, check if the top item of nextExplore has an orphan set of size zero. If it is, break out of this this for loop
+  if(nextExplore.top().getOrphansSize()==0){
+    break;
   }
-      //The output is the state in this array that has the lowest MaxDist.
-
-    for(int i = 0;i<index;i++){
-        possibleMin = finalAnswer[i].get_max_dist();
-
-        if((possibleMin < minMaxDist) || minMaxDist==0){
-          minMaxDist = possibleMin;
-        }
+  //Otherwise, transfer the contents of nextExplore into thisExplore.
+  else{
+    nextExplore.swap(thisExplore);
+    //However you do that, make sure that nextExplore is empty before the while loop continues.
+    //Then, let the while loop continue
+    while (!nextExplore.empty()){
+      nextExplore.pop();
     }
+  }
+}
+  //Once you've broken out, place the contents of nextExplore into a vector of states.
 
-    //Write the output to a file? I don't know what form the output is supposed to be in.
-    //Shouldn't be hard to find out though.
-    ofstream fout;
-    fout.open("answer.txt");
-    fout<< minMaxDist <<endl;
-    fout<< possibleMin <<endl;
-    fout.close();
-
-
-    //Remember to tweak the beam size
 
 }
