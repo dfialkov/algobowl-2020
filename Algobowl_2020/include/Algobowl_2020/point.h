@@ -8,10 +8,10 @@
 #include <string>
 
 struct Point {
-    int x, y, z;
+    int x, y, z, id;
 
     //constructor
-    Point(int x, int y, int z);
+    Point(int x, int y, int z, int id);
     Point(const Point& p);
 
     //compare 2 points (for the sake of priority_queue)

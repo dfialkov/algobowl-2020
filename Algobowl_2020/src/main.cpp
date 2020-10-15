@@ -28,7 +28,7 @@ int main() {
     ifstream ifs;
 
     //Beam size. You can change this for a bigger beam(more memory) or a smaller beam(less memory)
-    int beamSize = 1000;
+    int beamSize = 5;
 
     //access file
     ifs.open("input.txt", ios::in);
@@ -67,7 +67,7 @@ int main() {
         }
 
         //emplace combines push() and Point's constructor
-        points.emplace_back(x, y, z);
+        points.emplace_back(x, y, z, i+1);
     }
     ifs.close();
 
@@ -101,24 +101,25 @@ int main() {
     //Generate expansions of the state(try to place every point in the orphan set into every set of the set of sets).
     // Place expansions into nextExplore.
 
-
+int iter = 1;
 while(true){
+    
     //while thisExplore is not empty:
     while (!thisExplore.empty()){
       //Get a state off the top
       State myState = thisExplore.front();
       thisExplore.pop();
-      for(int i = 0;i<myState.getOrphansSize();i++){
+
         for(int j = 0;j<num_sets;j++){
           State expansionState = State(myState);
-          expansionState.step(i, j);
+          expansionState.step(0, j);
           nextExplore.push(expansionState);
           if(nextExplore.size() > beamSize){
             nextExplore.pop();
           }
 
         }
-      }
+      
 
       //Info on what to do after breaking out is directly after the end of this while loop
   }
@@ -127,16 +128,26 @@ while(true){
   if(nextExplore.top().getOrphansSize()==0){
     break;
   }
-  //Otherwise, transfer the contents of nextExplore into thisExplore.
+  
   else{
-    nextExplore.swap(thisExplore);
-    //However you do that, make sure that nextExplore is empty before the while loop continues.
-    //Then, let the while loop continue
-    while (!nextExplore.empty()){
+    //Otherwise, transfer the contents of nextExplore into thisExplore
+    while(!nextExplore.empty()){
+      thisExplore.push(nextExplore.top());
       nextExplore.pop();
     }
+    cout << "Iteration " << iter << endl;
+    iter += 1;
   }
 }
+
+State myAnswer = nextExplore.top();
+while(!nextExplore.empty()){
+  if(nextExplore.top().get_max_dist() < myAnswer.get_max_dist()){
+    myAnswer = nextExplore.top();
+  }
+  nextExplore.pop();
+}
+myAnswer.debug();
   //Once you've broken out, place the contents of nextExplore into a vector of states.
 
 
